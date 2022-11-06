@@ -2,10 +2,11 @@
 class GameOfLife
   class InvalidGenerationError < StandardError; end
   class LifeInEdges < StandardError; end
-  def check_generation(*rows)
-    raise InvalidGenerationError if rows.size == 1
+  def check_generation(generation)
+    raise InvalidGenerationError if generation.size == 1
 
-    rows.each do |row|
+    next_generation = []
+    generation.each_with_index do |row, row_index|
       raise LifeInEdges if row.first == true || row.last == true
     end
   end

@@ -6,7 +6,7 @@ describe GameOfLife do
   describe '.check_iteration' do
     context 'when an invalid generation is passed' do
       it 'raise error' do
-        generation = [true, false]
+        generation = [[true, false]]
 
         expect do
           described_class.new.check_generation(generation)
@@ -16,12 +16,34 @@ describe GameOfLife do
 
     context 'when there is life in the edge' do
       it 'raise error' do
-        first_row = [false, true, false]
-        second_row = [true, false, false]
+        generation = [
+          [false, true, false],
+          [true, false, false]
+        ]
 
         expect do
-          described_class.new.check_generation(first_row, second_row)
+          described_class.new.check_generation(generation)
         end.to raise_error(described_class::LifeInEdges)
+      end
+    end
+
+    context 'when a cell has no two alive neighbours' do
+      it 'dies irremediably' do
+        initial_generation = [
+          [false, false, false],
+          [false, true, false],
+          [false, false, false]
+        ]
+
+        expected_next_generation = [
+          [false, false, false],
+          [false, false, false],
+          [false, false, false]
+        ]
+
+        next_generation = described_class.new.check_generation(initial_generation)
+
+        expect(next_generation).to eq(expected_next_generation)
       end
     end
   end
