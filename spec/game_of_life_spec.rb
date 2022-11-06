@@ -47,7 +47,7 @@ describe GameOfLife do
       end
     end
 
-    context 'when a alive cell has 2 or 3 neighbours alive' do
+    context 'when an alive cell has 2 neighbours alive' do
       it 'goes to the next generation' do
         initial_generation = [
           [false, true, false],
@@ -59,6 +59,26 @@ describe GameOfLife do
           [false, false, false],
           [false, true, false],
           [false, false, false]
+        ]
+
+        next_generation = described_class.new.check_generation(initial_generation)
+
+        expect(next_generation).to eq(expected_next_generation)
+      end
+    end
+
+    context 'when an alive cell has 3 neighbours alive' do
+      it 'goes to the next generation' do
+        initial_generation = [
+          [false, true, false, false],
+          [false, true, true, false],
+          [false, true, false, false]
+        ]
+
+        expected_next_generation = [
+          [false, false, false, false],
+          [false, true, false, false],
+          [false, false, false, false]
         ]
 
         next_generation = described_class.new.check_generation(initial_generation)
